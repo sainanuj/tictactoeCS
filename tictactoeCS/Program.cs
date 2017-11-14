@@ -160,8 +160,7 @@ namespace tictactoeCS
                 SetGameActive(false);
             }
         }
-
-        //  This is where the game starts for the two human players.
+        
         static void TwoPlayers()
         {
             ResetBoard();
@@ -187,10 +186,97 @@ namespace tictactoeCS
             }
         }
 
+        static void RandomMove(char player)
+        {
+            Random r = new Random();
+            int row, col;
+            row = r.Next(0, 3);
+            col = r.Next(0, 3);
+            if (IsEmpty(row, col))
+            {
+                Board[row, col] = player;
+            }
+            else
+            {
+                RandomMove(player);
+            }
+        }
+
+        static void OnePlayer()
+        {
+            ResetBoard();
+            UpdateBoard();
+            char hp = Character();
+            if (hp.Equals('X'))
+            {
+                while (GameActive)
+                {
+                    if (Counter % 2 == 0)
+                    {
+                        AskPlayer('X');
+                    }
+                    else
+                    {
+                        // Computer will make move as player O.
+                    }
+                    UpdateBoard();
+                    Counter++;
+                    CheckForWinner();
+                    if (Counter == 9 && GameActive)
+                    {
+                        Console.WriteLine("\n\tThe match is a tie.");
+                        SetGameActive(false);
+                    }
+                }
+            }
+            else
+            {
+                while (GameActive)
+                {
+                    if (Counter % 2 == 0)
+                    {
+                        // Computer will make move as player X.
+                    }
+                    else
+                    {
+                        AskPlayer('O');
+                    }
+                    UpdateBoard();
+                    Counter++;
+                    CheckForWinner();
+                    if (Counter == 9 && GameActive)
+                    {
+                        Console.WriteLine("\n\tThe match is a tie.");
+                        SetGameActive(false);
+                    }
+                }
+            }
+        }
+
+        static char Character()
+        {
+            if (OneTwo().Equals("1"))
+            {
+                return 'X';
+            }
+            else
+            {
+                return 'O';
+            }
+        }
+
         static void Start()
         {
             String d;
-            TwoPlayers();
+            switch (OneTwo())
+            {
+                case 1:
+                    OnePlayer();
+                    break;
+                case 2:
+                    TwoPlayers();
+                    break;
+            }
             _D:
             if (!GameActive)
             {
@@ -202,7 +288,7 @@ namespace tictactoeCS
                 }
                 else if (d.Equals("C") || d.Equals("c"))
                 {
-                    TwoPlayers();
+                    Start();
                 }
                 else
                 {
@@ -210,11 +296,6 @@ namespace tictactoeCS
                     goto _D;
                 }
             }
-        }
-
-        static void RandomMove()
-        {
-
         }
 
         static int OneTwo()
@@ -232,11 +313,6 @@ namespace tictactoeCS
                 Console.WriteLine("\n\tPlease enter the correct input.");
                 return OneTwo();
             }
-        }
-
-        static void OnePlayer()
-        {
-
         }
     }
 }
