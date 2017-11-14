@@ -14,8 +14,8 @@ namespace tictactoeCS
 
         static void Main(string[] args)
         {
-            Start();
-
+            //Start();
+            Console.WriteLine(OneTwo());
         }
 
         // Sets game active.
@@ -46,7 +46,7 @@ namespace tictactoeCS
         // Updates and draws the board.
         static void UpdateBoard()
         {
-            Console.Clear();
+            Console.Clear();    // Clears the console.
             Console.WriteLine();
             for (int i = 0; i < 3; i++)
             {
@@ -181,6 +181,7 @@ namespace tictactoeCS
                 CheckForWinner();
                 if (Counter == 9 && GameActive)
                 {
+                    Console.WriteLine("\n\tThe match is a tie.");
                     SetGameActive(false);
                 }
             }
@@ -209,6 +210,33 @@ namespace tictactoeCS
                     goto _D;
                 }
             }
+        }
+
+        static void RandomMove()
+        {
+
+        }
+
+        static int OneTwo()
+        {
+            string s = Console.ReadLine();
+            if (s.Equals("1"))
+            {
+                return 1;
+            }
+            else if (s.Equals("2"))
+            {
+                return 2;
+            } else
+            {
+                Console.WriteLine("\n\tPlease enter the correct input.");
+                return OneTwo();
+            }
+        }
+
+        static void OnePlayer()
+        {
+
         }
     }
 }
