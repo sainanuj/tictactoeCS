@@ -1,0 +1,7 @@
+C:\Users\Desktop\Desktop\tictactoeCS\tictactoeCS\bin\Debug\tictactoeCS.exe.config
+C:\Users\Desktop\Desktop\tictactoeCS\tictactoeCS\bin\Debug\tictactoeCS.exe
+C:\Users\Desktop\Desktop\tictactoeCS\tictactoeCS\bin\Debug\tictactoeCS.pdb
+C:\Users\Desktop\Desktop\tictactoeCS\tictactoeCS\obj\Debug\tictactoeCS.csprojResolveAssemblyReference.cache
+C:\Users\Desktop\Desktop\tictactoeCS\tictactoeCS\obj\Debug\tictactoeCS.csproj.CoreCompileInputs.cache
+C:\Users\Desktop\Desktop\tictactoeCS\tictactoeCS\obj\Debug\tictactoeCS.exe
+C:\Users\Desktop\Desktop\tictactoeCS\tictactoeCS\obj\Debug\tictactoeCS.pdb
