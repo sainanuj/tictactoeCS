@@ -9,13 +9,14 @@ namespace tictactoeCS
     class Program
     {
         static int Counter = 0;
-        static bool GameActive;
+        static bool GameActive, Win;
         static char[,] Board;
-
+        static char hp;
+        
         static void Main(string[] args)
         {
-            //Start();
-            Console.WriteLine(OneTwo());
+            ResetBoard();
+            Start();
         }
 
         // Sets game active.
@@ -30,6 +31,7 @@ namespace tictactoeCS
          */
         static void ResetBoard()
         {
+            Win = false;
             Counter = 0;
             SetGameActive(true);
             Board = new char[3, 3];
@@ -116,8 +118,7 @@ namespace tictactoeCS
                     Console.WriteLine("Invalid input; try again...");
                     goto again1;
                 }
-                Console.WriteLine();
-                Console.Write("Player {0}, enter a column: ", player);
+                Console.Write("\nPlayer {0}, enter a column: ", player);
                 String _col = Console.ReadLine();
                 if (!Int32.TryParse(_col, out col))
                 {
@@ -159,6 +160,30 @@ namespace tictactoeCS
                 Console.WriteLine($"\nThe winner is player {Board[0, 2]}");
                 SetGameActive(false);
             }
+        }
+
+        static bool _cfw(char player)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (Board[i, 0] == Board[i, 1] && Board[i, 0] == Board[i, 2] && Board[i, 0] == player && GameActive)
+                {
+                    Win = true;
+                }
+                if (Board[0, i] == Board[1, i] && Board[0, i] == Board[2, i] && Board[0, i] == player && GameActive)
+                {
+                    Win = true;
+                }
+            }
+            if (Board[0, 0] == Board[1, 1] && Board[0, 0] == Board[2, 2] && Board[0, 0] == player && GameActive)
+            {
+                Win = true;
+            }
+            if (Board[0, 2] == Board[1, 1] && Board[0, 2] == Board[2, 0] && Board[0, 2] == player && GameActive)
+            {
+                Win = true;
+            }
+            return Win;
         }
         
         static void TwoPlayers()
@@ -202,11 +227,81 @@ namespace tictactoeCS
             }
         }
 
+        /** 
+         * The idea is to check every box in the grid whether it's empty or not.
+         * If a box is empty, the computer will check whether the human player 
+         * would win if he/she makes a move at that position. Here two cases are 
+         * possible -
+         *  
+         *  Case #1: The computer sees that the human player may win at his/her next 
+         *  move and it'll take countermeasure to thwart it by making a move at that
+         *  position.
+         *  
+         *  Case #2: The computer sees that there is no imminent chance for the human
+         *  player to win the match. Then, it'll try to seek a position where making 
+         *  a move may end the game. If it fails it'll make a random valid move. 
+         */
+        static void _ai(char player, char computer)
+        {
+            // Case #1
+            for (int i = 0; i < 3; i++)         
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (Board[i, j] == ' ')
+                    {
+                        Board[i, j] = player;
+                        if (_cfw(player))
+                        {
+                            Board[i, j] = computer;
+                            break;
+                        }
+                        else
+                        {
+                            Board[i, j] = ' ';
+                        }
+                    }
+                }
+                if (Win)
+                {
+                    break;
+                }
+            }
+
+            // Case #2
+            for (int i = 0; i < 3; i++)         
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (Board[i, j] == ' ')
+                    {
+                        Board[i, j] = computer;
+                        if (_cfw(computer))
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            Board[i, j] = ' ';
+                        }
+                    }
+                }
+                if (Win)
+                {
+                    break;
+                }
+            }
+            if (!Win)
+            {
+                RandomMove(computer);
+            }
+        }
+
         static void OnePlayer()
         {
             ResetBoard();
             UpdateBoard();
-            char hp = Character();
+            Character();
             if (hp.Equals('X'))
             {
                 while (GameActive)
@@ -218,6 +313,7 @@ namespace tictactoeCS
                     else
                     {
                         // Computer will make move as player O.
+                        _ai('X', 'O');
                     }
                     UpdateBoard();
                     Counter++;
@@ -236,6 +332,7 @@ namespace tictactoeCS
                     if (Counter % 2 == 0)
                     {
                         // Computer will make move as player X.
+                        _ai('O', 'X');
                     }
                     else
                     {
@@ -253,21 +350,23 @@ namespace tictactoeCS
             }
         }
 
-        static char Character()
+        static void Character()
         {
-            if (OneTwo().Equals("1"))
+            if (OneTwo() == 1)
             {
-                return 'X';
+                hp = 'X';
             }
             else
             {
-                return 'O';
+                hp = 'O';
             }
         }
 
         static void Start()
         {
             String d;
+            Console.Write("\n\tStarting game... Good luck!\n" +
+                "\nPress 1 to play with the computer otherwise press 2: ");
             switch (OneTwo())
             {
                 case 1:
