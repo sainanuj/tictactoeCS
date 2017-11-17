@@ -80,14 +80,22 @@ namespace tictactoeCS
          */
         static bool IsEmpty(int row, int col)
         {
-            if (Board[row - 1, col - 1] == ' ')
+            try
             {
-                return true;
+                if (Board[row - 1, col - 1] == ' ')
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
+            catch (Exception e)
             {
-                return false;
+                Console.WriteLine($"\n\tException occured. Row: {row}; Col: {col}\t{e.StackTrace}");
             }
+            return false;
         }
 
         /**
@@ -239,7 +247,10 @@ namespace tictactoeCS
          *  
          *  Case #2: The computer sees that there is no imminent chance for the human
          *  player to win the match. Then, it'll try to seek a position where making 
-         *  a move may end the game. If it fails it'll make a random valid move. 
+         *  a move may end the game. 
+         *  
+         * If case #1 and case #2 doesn't occur, the computer would make a valid
+         * random move.
          */
         static void _ai(char player, char computer)
         {
@@ -269,31 +280,35 @@ namespace tictactoeCS
             }
 
             // Case #2
-            for (int i = 0; i < 3; i++)         
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    if (Board[i, j] == ' ')
-                    {
-                        Board[i, j] = computer;
-                        if (_cfw(computer))
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            Board[i, j] = ' ';
-                        }
-                    }
-                }
-                if (Win)
-                {
-                    break;
-                }
-            }
             if (!Win)
             {
-                RandomMove(computer);
+                for (int i = 0; i < 3; i++)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        if (Board[i, j] == ' ')
+                        {
+                            Board[i, j] = computer;
+                            if (_cfw(computer))
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                Board[i, j] = ' ';
+                            }
+                        }
+                    }
+                    if (Win)
+                    {
+                        break;
+                    }
+                }
+
+                if (!Win)
+                {
+                    RandomMove(computer);
+                }
             }
         }
 
@@ -301,7 +316,8 @@ namespace tictactoeCS
         {
             ResetBoard();
             UpdateBoard();
-            Character();
+            Console.Write("Press 1 to choose X or press 2 to choose O: ");
+            Character(); // Sets the value of the variable, 'hp' of type char to either 'X' or 'O' 
             if (hp.Equals('X'))
             {
                 while (GameActive)
@@ -364,6 +380,7 @@ namespace tictactoeCS
 
         static void Start()
         {
+            ResetBoard();
             String d;
             Console.Write("\n\tStarting game... Good luck!\n" +
                 "\nPress 1 to play with the computer otherwise press 2: ");
