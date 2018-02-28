@@ -138,11 +138,7 @@ namespace tictactoeCS
             MakeMove(player, row, col);
         }
 
-        /**
-         *  Checks if the game is over or not
-         *  and sets the value of the variable
-         *  accordingly.
-         */
+        // Declares the winner or states whether there is a tie.
         static void CheckForWinner()
         {
             for (int i = 0; i < 3; i++)
@@ -170,6 +166,7 @@ namespace tictactoeCS
             }
         }
 
+        // Sets the value of the booelan variable 'Win' to 'true' or 'false' and returns it.
         static bool _cfw(char player)
         {
             for (int i = 0; i < 3; i++)
@@ -235,7 +232,7 @@ namespace tictactoeCS
             }
         }
 
-        /** 
+        /*
          * The idea is to check every box in the grid whether it's empty or not.
          * If a box is empty, the computer will check whether the human player 
          * would win if he/she makes a move at that position. Here two cases are 
@@ -254,7 +251,7 @@ namespace tictactoeCS
          */
         static void _ai(char player, char computer)
         {
-            // Case #1
+            // Case #1: Block anyplace where making a move the human player may win.
             for (int i = 0; i < 3; i++)         
             {
                 for (int j = 0; j < 3; j++)
@@ -414,6 +411,7 @@ namespace tictactoeCS
             }
         }
 
+        // Returns 1 or 2 depending upon what the user presses.
         static int OneTwo()
         {
             string s = Console.ReadLine();
